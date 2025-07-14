@@ -6,7 +6,7 @@ var game_running : bool
 var game_over : bool
 var scroll
 var score
-var highscore
+var highscore = 0
 const SCROLL_SPEED : int = 4
 var screen_size : Vector2i
 var ground_height : int
@@ -25,7 +25,7 @@ func new_game():
 	game_over = false
 	score = 0
 	scroll = 0
-	$ScoreLabel.text = "SCORE: " + str(score)
+	$ScoreLabel.text = "SCORE: " + str(score) + "\n" + "HIGHSCORE: " + str(highscore)
 	generate_pipes()
 	$birb.reset()
 	$GameOver.hide()
@@ -74,7 +74,9 @@ func generate_pipes():
 	
 func scored():
 	score += 1
-	$ScoreLabel.text = "SCORE: " + str(score)
+	if score > highscore:
+		highscore = score
+	$ScoreLabel.text = "SCORE: " + str(score) + "\n" + "HIGHSCORE: " + str(highscore)
 
 func check_top():
 	if $birb.position.y < 0:
@@ -87,7 +89,6 @@ func stop_game():
 	$birb.flying = false
 	game_running = false
 	game_over = true
-	
 
 func bird_hit():
 	$birb.falling = true
